@@ -428,7 +428,7 @@ public class ConsoleApp {
     private Book getBookByID(Session session) {
         int id;
         while (true) {
-            System.out.println("Enter id of the book you want to update.");
+            System.out.println("Enter id of the book.");
             if (scanner.hasNextInt()) {
                 id = scanner.nextInt();
                 break;
@@ -447,7 +447,7 @@ public class ConsoleApp {
     private Customer getCustomerByID(Session session) {
         int id;
         while (true) {
-            System.out.println("Enter id of the customer you want to update.");
+            System.out.println("Enter id of the customer.");
             if (scanner.hasNextInt()) {
                 id = scanner.nextInt();
                 break;
