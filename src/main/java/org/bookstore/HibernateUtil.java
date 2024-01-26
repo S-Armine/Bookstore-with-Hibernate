@@ -10,6 +10,10 @@ public class HibernateUtil {
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
 
+    /**
+     * This method initializes and manages Hibernate configuration and services
+     * @return The Hibernate session factory
+     */
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
@@ -30,6 +34,9 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
+    /**
+     * When the application is shutting down this method should be called to release resources
+     */
     public static void shutdown() {
         if (registry != null) {
             StandardServiceRegistryBuilder.destroy(registry);

@@ -14,6 +14,9 @@ import java.util.Scanner;
 public class ConsoleApp {
     private Scanner scanner = new Scanner(System.in);
 
+    /**
+     * This method is used to start the application.
+     */
     public void run() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             actions: while (true) {
@@ -53,9 +56,15 @@ public class ConsoleApp {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            HibernateUtil.shutdown();
         }
     }
 
+    /**
+     * Method for getting menu of actions that are available in app
+     * @return String representation of actions
+     */
     public String menu() {
         StringBuilder stringBuilder = new StringBuilder();
         return stringBuilder.append("Choose action you want to execute from list bellow.\n")
@@ -72,6 +81,10 @@ public class ConsoleApp {
                 .toString();
     }
 
+    /**
+     * THis method is used for updating book's details in database
+     * @param session The Hibernate session
+     */
     private void updateBookDetails(Session session) {
         Transaction transaction = session.beginTransaction();
         Book book = getBookByID(session);
@@ -141,6 +154,10 @@ public class ConsoleApp {
         transaction.commit();
     }
 
+    /**
+     * This method makes user to input genre and prints list of books that have given genre
+     * @param session The Hibernate session
+     */
     private void listBooksByGenre(Session session) {
         String hql = "FROM Book WHERE genre = :genre";
         try {
@@ -169,6 +186,10 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * This method makes user to input author and prints list of books that was written by given author
+     * @param session The Hibernate session
+     */
     private void listBooksByAuthor(Session session) {
         String hql = "FROM Book WHERE author = :author";
         try {
@@ -197,6 +218,10 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * This method is used for updating customer's information in database
+     * @param session The Hibernate session
+     */
     private void updateCustomerInformation(Session session) {
         Transaction transaction = session.beginTransaction();
         Customer customer = getCustomerByID(session);
@@ -248,6 +273,10 @@ public class ConsoleApp {
         transaction.commit();
     }
 
+    /**
+     * This method prints purchase history of certain customer
+     * @param session The Hibernate session
+     */
     private void customerHistory(Session session) {
         Customer customer = getCustomerByID(session);
         if (customer == null) {
@@ -281,6 +310,10 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * This method makes user to input genre and prints total revenue of given genre
+     * @param session The Hibernate session
+     */
     private void calculateRevenue(Session session) {
         String revenueQuery = "SELECT SUM(sale.totalPrice) " +
                 "FROM Sale sale " +
@@ -298,6 +331,10 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * This method prints information about all books that were sold
+     * @param session The Hibernate session
+     */
     private void getBookReport(Session session) {
         String reportQuery = "SELECT book.title, customer.name, sale.dateOfSale " +
                 "FROM Sale sale " +
@@ -323,6 +360,10 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * This method prints revenues of all genres in database
+     * @param session The Hibernate session
+     */
     private void getGenreRevenues(Session session) {
         String reportQuery = "SELECT book.genre, SUM(sale.totalPrice) " +
                 "FROM Sale sale " +
@@ -343,6 +384,10 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * This method inserts new sale in database
+     * @param session The Hibernate session
+     */
     private void processNewSale(Session session) {
         Transaction transaction = session.beginTransaction();
         Book book = getBookByID(session);
@@ -374,6 +419,12 @@ public class ConsoleApp {
         transaction.commit();
     }
 
+    /**
+     * This method makes user to input id and gives Book instance of the book that has that id in database
+     * If there is no book with given id it returns null
+     * @param session The Hibernate session
+     * @return Book instance with inputted id
+     */
     private Book getBookByID(Session session) {
         int id;
         while (true) {
@@ -387,6 +438,12 @@ public class ConsoleApp {
         return session.get(Book.class, id);
     }
 
+    /**
+     * This method makes user to input id and gives Customer instance of that book in database
+     * If there is no customer with given id it returns null
+     * @param session The Hibernate session
+     * @return Customer instance with inputted id
+     */
     private Customer getCustomerByID(Session session) {
         int id;
         while (true) {
